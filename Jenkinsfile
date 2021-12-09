@@ -22,10 +22,8 @@ pipeline {
 
 // steps
 def buildApp() {
-	dir ('section_4/code/cd_pipeline' ) {
-		def appImage = docker.build("hands-on-jenkins/myapp:${BUILD_NUMBER}")
+		def appImage = docker.build("techworld-js-docker-demo-app-dev/myapp:${BUILD_NUMBER}")
 	}
-}
 
 def deploy(environment) {
 
@@ -43,6 +41,6 @@ def deploy(environment) {
 
 	sh "docker ps -f name=${containerName} -q | xargs --no-run-if-empty docker stop"
 	sh "docker ps -a -f name=${containerName} -q | xargs -r docker rm"
-	sh "docker run -d -p ${port}:5000 --name ${containerName} hands-on-jenkins/myapp:${BUILD_NUMBER}"
+	sh "docker run -d -p ${port}:5000 --name ${containerName} techworld-js-docker-demo-app-dev/myapp:${BUILD_NUMBER}"
 
 }
