@@ -1,6 +1,5 @@
 def buildApp() {
-    docker build -t techworld-js-docker-demo-app-dev .
-    
+    docker build -t techworld-js-docker-demo-app-dev .  
 } 
 
 def testApp() {
