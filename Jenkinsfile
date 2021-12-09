@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = "gustavoapolinario/docker-test"
+    registry = "4514/newpipelineapp1"
     registryCredential = 'dockerhub'
     dockerImage = ''
   }
@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/gustavoapolinario/microservices-node-example-todo-frontend.git'
+        git 'https://github.com/uday7095/techworld-js-docker-demo-app-dev'
       }
     }
     stage('Building image') {
