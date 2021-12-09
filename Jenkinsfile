@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/uday7095/techworld-js-docker-demo-app-dev'
+        git 'https://github.com/uday7095/techworld-js-docker-demo-app-dev.git'
       }
     }
     stage('Building image') {
