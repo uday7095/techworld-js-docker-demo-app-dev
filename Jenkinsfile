@@ -6,41 +6,39 @@ pipeline {
         choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: '')
         booleanParam(name: 'executeTests', defaultValue: true, description: '')
     }
-        stages {
-
-        stage("Build") {
-            steps { buildApp() }
-		}
-
-        stage("Deploy - Dev") {
-            steps { deploy('dev') }
-		}
-
-	}
-}
-
-
-// steps
-def buildApp() {
-		def appImage = docker.build("techworld-js-docker-demo-app-dev/myapp:${BUILD_NUMBER}")
-	}
-
-def deploy(environment) {
-
-	def containerName = ''
-	def port = ''
-
-	if ("${environment}" == 'dev') {
-		containerName = "app_dev"
-		port = "8888"
-	} 
-	else {
-		println "Environment not valid"
-		System.exit(0)
-	}
-
-	sh "docker ps -f name=${containerName} -q | xargs --no-run-if-empty docker stop"
-	sh "docker ps -a -f name=${containerName} -q | xargs -r docker rm"
-	sh "docker run -d -p ${port}:5000 --name ${containerName} techworld-js-docker-demo-app-dev/myapp:${BUILD_NUMBER}"
-
+    stages {
+        stage("init") {
+            steps {
+                script {
+                   gv = load "script.groovy" 
+                }
+            }
+        }
+        stage("build") {
+            steps {
+                script {
+                    gv.buildApp()
+                }
+            }
+        }
+        stage("test") {
+            when {
+                expression {
+                    params.executeTests
+                }
+            }
+            steps {
+                script {
+                    gv.testApp()
+                }
+            }
+        }
+        stage("deploy") {
+            steps {
+                script {
+                    gv.deployApp()
+                }
+            }
+        }
+    }   
 }
